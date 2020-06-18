@@ -237,7 +237,7 @@ infect() {
   [[ -z "$NIX_CHANNEL" ]] && NIX_CHANNEL="nixos-20.03"
 
   # This next weird nix user hackery is to get nix to install as root hands-free
-  curl https://nixos.org/nix/install | su - nix -c $SHELL
+  curl -L https://nixos.org/nix/install | su - nix -c $SHELL
 
   su - nix -c bash <<EOM
   source ~/.nix-profile/etc/profile.d/nix.sh
