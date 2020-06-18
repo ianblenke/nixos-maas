@@ -33,6 +33,7 @@ EOM
 systemctl enable nixos-infect.service
 EOF
   chroot . bash -xe ./purpose.sh
+
   umount $(mount | sort -r | grep ${target} | awk '{print $3}')
   umount $(mount | sort -r | grep ${target} | awk '{print $3}')
   cd ..

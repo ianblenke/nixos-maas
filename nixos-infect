@@ -50,6 +50,19 @@ makeConf() {
   users.users.root.openssh.authorizedKeys.keys = [$(while read -r line; do echo -n "
     \"$line\" "; done <<< "$keys")
   ];
+
+  systemd.services.old-root = {
+    description = "Remove /old-root";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "/run/current-system/sw/bin/sh -c '[ -d /old-root ] && rm -fr /old-root'";
+      Restart = "on-abort";
+      User = "root";
+    };
+    wantedBy = [ "default.target" ];
+  };
+
+  systemd.services.old-root.enable = true;
 }
 EOF
   cat /etc/nixos/configuration.nix
