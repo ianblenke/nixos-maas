@@ -4,16 +4,17 @@
 
 # Disable SELinux
 which setenforce && setenforce 0
-sed -i -e 's/^SELINUX=.*$/SELINUX=disabled/' /etc/selinux/config
-setenforce 0
 
 # Install sudo
-yum install -y sudo
+which sudo || (which yum && yum install -y sudo) \
+           || (which apt-get && apt-get update && apt-get install -y sudo) \
+           || true
 
 # Create a nix user and give it sudo access
 groupadd -g 1001 nix
 useradd -g 1001 -u 1001 -d /home/nix -s /bin/bash -m nix
-usermod -a -G wheel nix
+usermod -a -G wheel nix || usermod -a -G sudo nix
+sed -i -e "s/^%sudo.*ALL$/%sudo   ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 sed -i -e "s/^%wheel.*ALL$/%wheel   ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers
 mkdir -p /nix
 chown nix:nix /nix
@@ -246,11 +247,8 @@ infect() {
   nix-channel --update
 EOM
 
-  # Now naively copy the nix user profile and fixup links and permissions for root
-
+  # Now naively copy the nix user profile to root user and fixup links
   cp -a /nix/var/nix/profiles/per-user/nix/ /nix/var/nix/profiles/per-user/root/
-  #find /nix/ -uid 1001 -exec chown root {} \;
-  #find /nix/ -gid 1001 -exec chgrp root {} \;
   ln -nsf /nix/var/nix/profiles/per-user/root/profile ~/.nix-profile
   mkdir -p ~/.nix-defexpr
   ln -nsf /nix/var/nix/profiles/per-user/root/channels ~/.nix-defexpr/channels
