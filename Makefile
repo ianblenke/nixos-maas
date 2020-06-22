@@ -2,5 +2,5 @@ usage:
 	cat README.md
 
 build:
-	./centos-nixos.sh
+	./upload-centos-nixos.sh
 

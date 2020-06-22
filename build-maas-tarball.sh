@@ -1,9 +1,12 @@
-#!/bin/bash -x
+#!/usr/bin/env bash -ex
 target=centos-amd64.$(date +%Y%m%d%H%M%S)
 tarball=${target}.tar.gz
 if [ ! -d $target ]; then
-  mkdir $target
-  tar xzpf /var/lib/maas/boot-resources/current/centos/amd64/generic/centos70/daily/root-tgz -C $target
+  mkdir -p $target
+  if [ ! -f root-tgz ]; then
+    curl -Lo root-tgz https://images.maas.io/ephemeral-v3/daily/centos70/amd64/20190701_01/root-tgz
+  fi
+  tar xzpf root-tgz -C $target
 
   # Copy in the nixos-infect script
   cp -a nixos-infect $target/nixos-infect
@@ -38,5 +41,4 @@ EOF
   umount $(mount | sort -r | grep ${target} | awk '{print $3}')
   cd ..
   tar czpf ${tarball} -C ${target} .
-  maas admin boot-resources create name=custom/nixos-tarball title="NixOS Tarball" architecture=amd64/generic content@=${tarball}
 fi

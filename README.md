@@ -21,7 +21,7 @@ The centos-nix.sh script assumes:
 
 Run this script:
 
-	./centos-nixos.sh
+	./upload-centos-nixos.sh
 
 Now go "Deploy" a MaaS machine using the new "NixOS Tarball" image.
 
