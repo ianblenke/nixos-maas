@@ -56,7 +56,7 @@ makeConf() {
     description = "Remove /old-root";
     serviceConfig = {
       Type = "simple";
-      ExecStart = "/run/current-system/sw/bin/sh -c '[ -d /old-root ] && rm -fr /old-root'";
+      ExecStart = "/run/current-system/sw/bin/sh -c 'if [ -d /old-root ]; then rm -fr /old-root ; fi; true'";
       Restart = "on-abort";
       User = "root";
     };
