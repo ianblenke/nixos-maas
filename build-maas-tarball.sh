@@ -11,13 +11,7 @@ if [ ! -d $target ]; then
   # Copy in the nixos-infect script
   cp -a nixos-infect $target/nixos-infect
 
-  cd $target
-  mount -t proc /proc proc/
-  mount --rbind /sys sys/
-  mount --rbind /dev dev/
-  mount --rbind /tmp tmp/
-
-  cat <<EOF > purpose.sh
+  cat <<EOF > $target/purpose.sh
 #!/bin/bash -xe
 cat <<EOM > /etc/systemd/system/nixos-infect.service
 [Unit]
@@ -35,10 +29,7 @@ WantedBy=multi-user.target
 EOM
 systemctl enable nixos-infect.service
 EOF
-  chroot . bash -xe ./purpose.sh
+  chroot $target bash -xe ./purpose.sh
 
-  umount $(mount | sort -r | grep ${target} | awk '{print $3}')
-  umount $(mount | sort -r | grep ${target} | awk '{print $3}')
-  cd ..
   tar czpf ${tarball} -C ${target} .
 fi
