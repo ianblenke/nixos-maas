@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -ex
+#!/usr/bin/env bash
+set -ex
+
 target=centos-amd64.$(date +%Y%m%d%H%M%S)
 tarball=${target}.tar.gz
 if [ ! -d $target ]; then
@@ -11,9 +13,7 @@ if [ ! -d $target ]; then
   # Copy in the nixos-infect script
   cp -a nixos-infect $target/nixos-infect
 
-  cat <<EOF > $target/purpose.sh
-#!/bin/bash -xe
-cat <<EOM > /etc/systemd/system/nixos-infect.service
+  cat <<EOM > $target/etc/systemd/system/nixos-infect.service
 [Unit]
 Description=NixOS Infect
 After=network.target
@@ -27,9 +27,9 @@ Restart=on-abort
 [Install]
 WantedBy=multi-user.target
 EOM
-systemctl enable nixos-infect.service
-EOF
-  chroot $target bash -xe ./purpose.sh
+
+  # Do a `systemctl enable nixos-infect.service` without chroot
+  ln -s /etc/systemd/system/nixos-infect.service $target/etc/systemd/system/multi-user.target.wants/nixos-infect.service
 
   tar czpf ${tarball} -C ${target} .
 fi
