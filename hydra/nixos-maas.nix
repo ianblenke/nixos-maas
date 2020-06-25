@@ -3,14 +3,29 @@
 #
 
 with import <nixpkgs> {};
-
+ 
 let
-  nixosMaas = pkgs.writeShellScriptBin "nixos-maas" ''
-    ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh | ${pkgs.bash}/bin/bash -x
-  '';
-in
-stdenv.mkDerivation {
-  name = "nixos-maas";
+  pkgs = import <nixpkgs> { inherit system; };
 
-  buildInputs = [ nixosMaas ];
+jobs = rec {
+
+  nixosMaas = pkgs.writeShellScriptBin "build-maas-tarball.sh" ''
+    ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh
+  '';
+
+  build = stdenv.mkDerivation rec {
+    name = "nixos-maas";
+  
+    buildInputs = [
+      pkgs.curl
+      pkgs.gnutar
+      pkgs.gzip
+      nixosMaas
+    ];
+
+    installPhase = '' 
+      build-maas-tarball.sh
+    ''
+  }
 }
+in jobs;
