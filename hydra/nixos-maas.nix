@@ -12,22 +12,19 @@ let
   '';
 
   runBuildMaasTarball = stdenv.mkDerivation rec {
-        name = "nixos-maas";
+    name = "nixos-maas";
   
-        buildInputs = [
-          pkgs.curl
-          pkgs.gnutar
-          pkgs.gzip
-          nixosMaas
-        ];
+    buildInputs = [
+      pkgs.curl
+      pkgs.gnutar
+      pkgs.gzip
+      nixosMaas
+    ];
 
-        installPhase = '' 
-          build-maas-tarball.sh
-        '';
-      }
-
-    )
-  );
+    installPhase = '' 
+      build-maas-tarball.sh
+    '';
+  }
 
 in {
   maasTarball = runBuildMaasTarball
