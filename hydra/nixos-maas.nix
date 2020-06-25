@@ -18,7 +18,7 @@ let
       pkgs.curl
       pkgs.gnutar
       pkgs.gzip
-      nixosMaas
+      buildMaasTarball
     ];
 
     installPhase = '' 
