@@ -8,7 +8,7 @@ let
   pkgs = import <nixpkgs> { inherit system; };
 
   buildMaasTarball = pkgs.writeShellScriptBin "build-maas-tarball.sh" ''
-    ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh | ${pkgs.bash}/bin/bash -x
+    ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh
   '';
 
   runBuildMaasTarball = stdenv.mkDerivation rec {
@@ -20,6 +20,10 @@ let
       pkgs.gzip
       buildMaasTarball
     ];
+
+    installPhase = '' 
+      ${pkgs.bash}/bin/bash -x build-maas-tarball.sh
+    '';
   };
 
 in {
