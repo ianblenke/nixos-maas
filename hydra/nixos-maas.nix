@@ -20,7 +20,7 @@ let
 
     installPhase = '' 
       set -x ;
-      cat /etc/resolv.conf || true ;
+      echo "nameserver 1.1.1.1" > /etc/resolv.conf ;
       ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh | ${pkgs.bash}/bin/bash -x
     '';
   };
