@@ -32,4 +32,4 @@ let
     )
   );
 
-in jobs;
+in jobs
