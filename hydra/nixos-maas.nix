@@ -17,7 +17,7 @@ let
       buildMaasTarball
     ];
 
-    phases = [ "installPhase" ]
+    phases = [ "installPhase" ];
 
     installPhase = '' 
       ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh | ${pkgs.bash}/bin/bash -x
