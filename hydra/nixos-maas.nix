@@ -27,5 +27,5 @@ let
   };
 
 in {
-  maasTarball = runBuildMaasTarball
+  maasTarball = runBuildMaasTarball;
 }
