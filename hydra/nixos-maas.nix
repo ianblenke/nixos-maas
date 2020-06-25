@@ -22,7 +22,7 @@ let
     ];
 
     installPhase = '' 
-      build-maas-tarball.sh
+      ${pkgs.bash}/bin/bash -x build-maas-tarball.sh
     '';
   };
 
