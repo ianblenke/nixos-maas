@@ -1,0 +1,22 @@
+{
+    "maas_centos_image": {
+        "sha256": "0gbsdgaa91v63r5bmqxqja7c3zk88v8qs9fx3pcsqarm1w1ignka",
+        "type": "file",
+        "url": "https://images.maas.io/ephemeral-v3/daily/centos70/amd64/20190701_01/root-tgz",
+        "url_template": "https://images.maas.io/ephemeral-v3/daily/centos70/amd64/<version>/root-tgz",
+        "version": "20190701_01"
+    },
+    "nixpkgs": {
+        "branch": "release-20.03",
+        "builtin": true,
+        "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
+        "homepage": null,
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "05a32d8e771dc39438835ba0e3141d68ad4e3068",
+        "sha256": "0w8824m4f15km3mngji35qjs9sgfvfpl57b0dq6hch5gmhlal679",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/05a32d8e771dc39438835ba0e3141d68ad4e3068.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}
