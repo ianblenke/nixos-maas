@@ -19,6 +19,8 @@ let
     phases = [ "installPhase" ];
 
     installPhase = '' 
+      set -x ;
+      cat /etc/resolv.conf || true ;
       ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh | ${pkgs.bash}/bin/bash -x
     '';
   };
