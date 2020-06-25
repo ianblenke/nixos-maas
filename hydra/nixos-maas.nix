@@ -14,7 +14,6 @@ let
       pkgs.curl
       pkgs.gnutar
       pkgs.gzip
-      buildMaasTarball
     ];
 
     phases = [ "installPhase" ];
