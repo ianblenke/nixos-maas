@@ -7,25 +7,29 @@ with import <nixpkgs> {};
 let
   pkgs = import <nixpkgs> { inherit system; };
 
-jobs = rec {
-
   nixosMaas = pkgs.writeShellScriptBin "build-maas-tarball.sh" ''
     ${pkgs.curl}/bin/curl https://raw.githubusercontent.com/ianblenke/nixos-maas/master/build-maas-tarball.sh
   '';
 
-  build = stdenv.mkDerivation rec {
-    name = "nixos-maas";
-  
-    buildInputs = [
-      pkgs.curl
-      pkgs.gnutar
-      pkgs.gzip
-      nixosMaas
-    ];
+  jobs = (
+    mapTestOn (
 
-    installPhase = '' 
-      build-maas-tarball.sh
-    ''
-  }
+      stdenv.mkDerivation rec {
+        name = "nixos-maas";
+  
+        buildInputs = [
+          pkgs.curl
+          pkgs.gnutar
+          pkgs.gzip
+          nixosMaas
+        ];
+
+        installPhase = '' 
+          build-maas-tarball.sh
+        ''
+      }
+
+    )
+  );
 }
 in jobs;
