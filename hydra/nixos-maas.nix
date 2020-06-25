@@ -26,7 +26,7 @@ let
 
         installPhase = '' 
           build-maas-tarball.sh
-        ''
+        '';
       }
 
     )
