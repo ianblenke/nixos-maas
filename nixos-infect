@@ -132,6 +132,9 @@ makeNetworkingConf() {
       $interfaces1
     };
   };
+  config.boot.kernelPackages = pkgs.linuxPackages_latest;
+  config.boot.kernelModules = [ "nvme", "nvme_core" ];
+  config.boot.kernelParams = [ "nvme_core.io_timeout=255 boot.trace boot.shell_on_fail" ];
   services.udev.extraRules = ''
     ATTR{address}=="${ether0}", NAME="${eth0_name}"
     $extraRules1
