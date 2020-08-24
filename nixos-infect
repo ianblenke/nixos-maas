@@ -36,14 +36,17 @@ makeConf() {
   local network_import=""
 
   network_import="./networking.nix"
+  #boot.kernelModules = [ "nvme", "nvme_core" ];
   cat > /etc/nixos/configuration.nix << EOF
-{ ... }: {
+{ pkgs, ... }: {
   imports = [
     ./hardware-configuration.nix
     $network_import
     $NIXOS_IMPORT
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "nvme_core.io_timeout=255 boot.trace boot.shell_on_fail" ];
   boot.cleanTmpDir = true;
   networking.hostName = "$(hostname)";
   networking.firewall.allowPing = true;
@@ -132,9 +135,6 @@ makeNetworkingConf() {
       $interfaces1
     };
   };
-  config.boot.kernelPackages = pkgs.linuxPackages_latest;
-  config.boot.kernelModules = [ "nvme", "nvme_core" ];
-  config.boot.kernelParams = [ "nvme_core.io_timeout=255 boot.trace boot.shell_on_fail" ];
   services.udev.extraRules = ''
     ATTR{address}=="${ether0}", NAME="${eth0_name}"
     $extraRules1
